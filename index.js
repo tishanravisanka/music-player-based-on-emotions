@@ -34,9 +34,9 @@ const db = admin.firestore();
 
 // requesting recomended song list
 app.post("/getSongs", async (req, res) => {
-  const { email } = req.body;
+  // const { email } = req.body;
   // const { emotion } = req.body;
-  
+  email = "new@gmail.com";
 
 
   // getting data from firestore database
