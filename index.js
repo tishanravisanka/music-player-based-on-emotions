@@ -4,6 +4,7 @@ const express = require("express");
 const app = express();
 var jwt = require("jsonwebtoken");
 const admin = require('firebase-admin');
+const port = process.env.PORT || 3000;
 
 const serviceAccount = require('./music-player-2fab1-firebase-adminsdk-zhvs4-2d89ec21c6.json');
 
