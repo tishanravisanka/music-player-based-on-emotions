@@ -2,14 +2,15 @@
 const PORT = process.env.PORT || 3000;
 const express = require("express");
 const app = express();
-var jwt = require("jsonwebtoken");
 const admin = require('firebase-admin');
 const serviceAccount = require('./music-player-2fab1-firebase-adminsdk-zhvs4-2d89ec21c6.json');
 
-var gender, age, musicType;
+var userEmotion = "Happy";
+var userAgeType;
 
 var songs = []; 
-var songsList = [];                          
+var songsList = [];   
+var fomatedSongsList = [];                          
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
@@ -17,8 +18,7 @@ admin.initializeApp({
 
 const db = admin.firestore();
 
-const docRef = db.collection('uers').doc('alovelace');
-
+// const docRef = db.collection('uers').doc('alovelace');
 // (async ()=>{
 // await docRef.set({
 //   first: 'Ad',
@@ -28,58 +28,116 @@ const docRef = db.collection('uers').doc('alovelace');
 // })();
 
 
-(async ()=>{
+// (async ()=>{
 
-const UsersSnapshot = await db.collection('Users').get();
-const MusicSnapshot = await db.collection('Music').get();
+// })();
 
-UsersSnapshot.forEach((doc) => {
-  if(doc.id == 'admin@gmail.com'){
-    gender = doc.data().gender;
-    age = doc.data().gender;
-  } 
-  // console.log(gender, '=>', age);
-});
-
-MusicSnapshot.forEach((doc) => {
-
-  songs=[]; 
-
-  songs.push({
-    key:   "age",
-    value: doc.data().age
-  });
-
-  songs.push({
-    key:   "emotion",
-    value: doc.data().emotion
-  });
-
-  songs.push({
-    key:   "link",
-    value: doc.data().link
-  });
-
-  songs.push({
-    key:   "singer",
-    value: doc.data().singer
-  });
-
-  songs.push({
-    key:   "title",
-    value: doc.data().title
-  });
-  songsList.push(songs);
+// requesting recomended song list
+app.post("/getSongs", async (req, res) => {
+  const { email } = req.body;
+  // const { emotion } = req.body;
   
-});
 
-  console.log(songsList);
+
+  // getting data from firestore database
+  const UsersSnapshot = await db.collection('Users').get();
+  const MusicSnapshot = await db.collection('Music').get();
   
-})();
+  // get currentt user data
+  UsersSnapshot.forEach((doc) => {
+    if(doc.id == email){
+      gender = doc.data().gender;
+      userAge = doc.data().age;
+    } 
+  });
+  
+  // add songs to a array of dictionary
+  MusicSnapshot.forEach((doc) => {
+  
+    songs=[]; 
+  
+    songs.push({
+      key:   "age",
+      value: doc.data().age
+    });
+  
+    songs.push({
+      key:   "emotion",
+      value: doc.data().emotion
+    });
+  
+    songs.push({
+      key:   "link",
+      value: doc.data().link
+    });
+  
+    songs.push({
+      key:   "singer",
+      value: doc.data().singer
+    });
+  
+    songs.push({
+      key:   "title",
+      value: doc.data().title
+    });
+    songsList.push(songs);
+    
+  });
+  
+    // recomend song bAsed on user emotion
+    for (x in songsList){
+      if(songsList[x][1].value==userEmotion){
+        fomatedSongsList.push(songsList[x]);
+        songsList.pop(songsList[x]);
+        x--;
+      }
+  
+  
+    }
+    // music recomand based on age
+    if(songsList.length!=0){
+      // catogorize songs based on recomended age
+      if(userAge<18)
+       userAgeType = "kid";
+      else if(userAge<35)
+       userAgeType = "young";
+      else
+        userAgeType = "old";
+  
+      for (x in songsList){
+        // catogarize user based on age
+        if(songsList[x][0].value<18)
+          songsList[x][0].value = "kid";
+        else if(songsList[x][0].value<35)
+          songsList[x][0].value = "young";
+        else
+          songsList[x][0].value = "old";
+      }
+  
+      for (x in songsList){
+        if(songsList[x][0].value==userAgeType){
+          fomatedSongsList.push(songsList[x]);
+          songsList.pop(songsList[x]);
+        }
+        
+      }
+  
+    }
+  
+    // add remainng songs
+    if(songsList.length!=0){
+      for (x in songsList){
+        fomatedSongsList.push(songsList[x]);
+      }
+    }
+      
+    console.log(fomatedSongsList);
+  
 
-app.get("/", function(req, res) {
-  //when we get an http get request to the root/homepage
-  res.send(songsList);
+
+
+  res.send(fomatedSongsList);
+
 });
 
 
