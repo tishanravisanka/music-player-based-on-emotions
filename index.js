@@ -136,3 +136,7 @@ app.get("/", function(req, res) {
 //     return res.json({ token: token });
 //   });
 // app.listen(5000, () => console.log("Example app listening on port 5000!"));
+
+app.listen(PORT, function() {
+  console.log(`Listening on Port ${PORT}`);
+});
