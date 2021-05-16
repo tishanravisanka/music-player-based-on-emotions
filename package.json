@@ -1,17 +1,15 @@
 {
-  "name": "nodejs",
+  "name": "hero",
   "version": "1.0.0",
-  "description": "music-player-based-on-emotions",
+  "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+      "start": "node index.js",
+      "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Tishan",
+  "author": "",
   "license": "ISC",
   "dependencies": {
-    "@google-cloud/firestore": "^4.11.1",
-    "express": "^4.17.1",
-    "firebase-admin": "^9.8.0",
-    "jsonwebtoken": "^8.5.1"
+      "express": "^4.16.4"
   }
 }
