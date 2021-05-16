@@ -27,140 +27,131 @@ const db = admin.firestore();
 // });
 // })();
 
-app.get("/getSongs", function(req, res) {
-  res.send(songsList);
 
-  
-});
-// (async ()=>{
-
-// })();
-
-// requesting recomended song list
-app.post("/", function (req, res){
-  // const { email } = req.body;
-  // const { emotion } = req.body;
-  email = "new@gmail.com";
-
+(async ()=>{
 
   // getting data from firestore database
-  const UsersSnapshot =  db.collection('Users').get();
-  const MusicSnapshot =  db.collection('Music').get();
-  
-  // get currentt user data
-  UsersSnapshot.forEach((doc) => {
-    if(doc.id == email){
-      gender = doc.data().gender;
-      userAge = doc.data().age;
-    } 
+const UsersSnapshot = await db.collection('Users').get();
+const MusicSnapshot = await db.collection('Music').get();
+
+// get currentt user data
+UsersSnapshot.forEach((doc) => {
+  if(doc.id == 'admin@gmail.com'){
+    gender = doc.data().gender;
+    userAge = doc.data().age;
+  } 
+});
+
+// add songs to a array of dictionary
+MusicSnapshot.forEach((doc) => {
+
+  songs=[]; 
+
+  songs.push({
+    key:   "age",
+    value: doc.data().age
   });
-  
-  // add songs to a array of dictionary
-  MusicSnapshot.forEach((doc) => {
-  
-    songs=[]; 
-  
-    songs.push({
-      key:   "age",
-      value: doc.data().age
-    });
-  
-    songs.push({
-      key:   "emotion",
-      value: doc.data().emotion
-    });
-  
-    songs.push({
-      key:   "link",
-      value: doc.data().link
-    });
-  
-    songs.push({
-      key:   "singer",
-      value: doc.data().singer
-    });
-  
-    songs.push({
-      key:   "title",
-      value: doc.data().title
-    });
-    songsList.push(songs);
-    
+
+  songs.push({
+    key:   "emotion",
+    value: doc.data().emotion
   });
+
+  songs.push({
+    key:   "link",
+    value: doc.data().link
+  });
+
+  songs.push({
+    key:   "singer",
+    value: doc.data().singer
+  });
+
+  songs.push({
+    key:   "title",
+    value: doc.data().title
+  });
+  songsList.push(songs);
   
-    // recomend song bAsed on user emotion
+});
+
+  // recomend song bAsed on user emotion
+  for (x in songsList){
+    if(songsList[x][1].value==userEmotion){
+      fomatedSongsList.push(songsList[x]);
+      songsList.pop(songsList[x]);
+      x--;
+    }
+
+
+  }
+  // music recomand based on age
+  if(songsList.length!=0){
+    // catogorize songs based on recomended age
+    if(userAge<18)
+     userAgeType = "kid";
+    else if(userAge<35)
+     userAgeType = "young";
+    else
+      userAgeType = "old";
+
     for (x in songsList){
-      if(songsList[x][1].value==userEmotion){
+      // catogarize user based on age
+      if(songsList[x][0].value<18)
+        songsList[x][0].value = "kid";
+      else if(songsList[x][0].value<35)
+        songsList[x][0].value = "young";
+      else
+        songsList[x][0].value = "old";
+    }
+
+    for (x in songsList){
+      if(songsList[x][0].value==userAgeType){
         fomatedSongsList.push(songsList[x]);
         songsList.pop(songsList[x]);
-        x--;
       }
-  
-  
-    }
-    // music recomand based on age
-    if(songsList.length!=0){
-      // catogorize songs based on recomended age
-      if(userAge<18)
-       userAgeType = "kid";
-      else if(userAge<35)
-       userAgeType = "young";
-      else
-        userAgeType = "old";
-  
-      for (x in songsList){
-        // catogarize user based on age
-        if(songsList[x][0].value<18)
-          songsList[x][0].value = "kid";
-        else if(songsList[x][0].value<35)
-          songsList[x][0].value = "young";
-        else
-          songsList[x][0].value = "old";
-      }
-  
-      for (x in songsList){
-        if(songsList[x][0].value==userAgeType){
-          fomatedSongsList.push(songsList[x]);
-          songsList.pop(songsList[x]);
-        }
-        
-      }
-  
-    }
-  
-    // add remainng songs
-    if(songsList.length!=0){
-      for (x in songsList){
-        fomatedSongsList.push(songsList[x]);
-      }
-    }
       
-    console.log(fomatedSongsList);
-  
+    }
 
+  }
 
+  // add remainng songs
+  if(songsList.length!=0){
+    for (x in songsList){
+      fomatedSongsList.push(songsList[x]);
+    }
+  }
+    
+  console.log(fomatedSongsList);
 
-  res.send(fomatedSongsList);
+})();
+
+// requesting recomended song list
+app.get("/getSongs", function(req, res) {
+  // const { email } = req.body;
+  // const { emotion } = req.body;
+  // console.log(email);
+  res.send(songsList);
 
 });
 
 
 
 
-// app.post("/getSongs", async (req, res) => {
-//   const { email } = req.body;
-//   console.log(email);
+app.post("/getSongs", async (req, res) => {
+  const { email } = req.body;
+  console.log(email);
 
-//   let user = await User.findOne({ email });
-//   console.log(user);
-//   if (!user) {
-//     return res.json({ msg: "no user found with that email" });
-//   }
+  let user = await User.findOne({ email });
+  console.log(user);
+  if (!user) {
+    return res.json({ msg: "no user found with that email" });
+  }
   
 
-//   var token = jwt.sign({ id: user.id }, "password");
-//   return res.json(user);
-// });
+  var token = jwt.sign({ id: user.id }, "password");
+  return res.json(user);
+});
 
 
 
