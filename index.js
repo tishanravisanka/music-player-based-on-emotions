@@ -13,23 +13,23 @@ admin.initializeApp({
 
 const db = admin.firestore();
 
-const docRef = db.collection('users').doc('alovelace');
+// const docRef = db.collection('uers').doc('alovelace');
 
-(async ()=>{
-await docRef.set({
-  first: 'Ada',
-  last: 'Lovelace',
-  born: 1815
-});
-})();
+// (async ()=>{
+// await docRef.set({
+//   first: 'Ad',
+//   last: 'Lovelace',
+//   born: 1815
+// });
+// })();
 
 
-(async ()=>{
-const snapshot = await db.collection('Users').get();
-snapshot.forEach((doc) => {
-  // console.log(doc.id, '=>', doc.data());
-});
-})();
+// (async ()=>{
+// const snapshot = await db.collection('Users').get();
+// snapshot.forEach((doc) => {
+//   // console.log(doc.id, '=>', doc.data());
+// });
+// })();
 
 app.get("/", function(req, res) {
   //when we get an http get request to the root/homepage
