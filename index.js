@@ -27,21 +27,25 @@ const db = admin.firestore();
 // });
 // })();
 
+app.get("/getSongs", function(req, res) {
+  res.send(songsList);
 
+  
+});
 // (async ()=>{
 
 // })();
 
 // requesting recomended song list
-app.post("/getSongs", async (req, res) => {
+app.post("/", function (req, res){
   // const { email } = req.body;
   // const { emotion } = req.body;
   email = "new@gmail.com";
 
 
   // getting data from firestore database
-  const UsersSnapshot = await db.collection('Users').get();
-  const MusicSnapshot = await db.collection('Music').get();
+  const UsersSnapshot =  db.collection('Users').get();
+  const MusicSnapshot =  db.collection('Music').get();
   
   // get currentt user data
   UsersSnapshot.forEach((doc) => {
