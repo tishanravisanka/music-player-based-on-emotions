@@ -27,7 +27,7 @@ await docRef.set({
 (async ()=>{
 const snapshot = await db.collection('Users').get();
 snapshot.forEach((doc) => {
-  console.log(doc.id, '=>', doc.data());
+  //console.log(doc.id, '=>', doc.data());
 });
 })();
 
