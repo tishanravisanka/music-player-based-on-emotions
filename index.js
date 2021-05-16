@@ -33,6 +33,8 @@ snapshot.forEach((doc) => {
 
 app.get("/getSongs", (req, res) => res.send("Hello World!"));
 
+app.listen(5000, () => console.log("Example app listening on port 5000!"));
+
 // app.post("/getSongs", async (req, res) => {
 //   const { email } = req.body;
 //   console.log(email);
