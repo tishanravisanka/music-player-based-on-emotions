@@ -4,8 +4,12 @@ const express = require("express");
 const app = express();
 var jwt = require("jsonwebtoken");
 const admin = require('firebase-admin');
-
 const serviceAccount = require('./music-player-2fab1-firebase-adminsdk-zhvs4-2d89ec21c6.json');
+
+var gender, age, musicType;
+
+var songs = []; 
+var songsList = [];                          
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
@@ -13,7 +17,7 @@ admin.initializeApp({
 
 const db = admin.firestore();
 
-// const docRef = db.collection('uers').doc('alovelace');
+const docRef = db.collection('uers').doc('alovelace');
 
 // (async ()=>{
 // await docRef.set({
@@ -24,16 +28,58 @@ const db = admin.firestore();
 // })();
 
 
-// (async ()=>{
-// const snapshot = await db.collection('Users').get();
-// snapshot.forEach((doc) => {
-//   // console.log(doc.id, '=>', doc.data());
-// });
-// })();
+(async ()=>{
+
+const UsersSnapshot = await db.collection('Users').get();
+const MusicSnapshot = await db.collection('Music').get();
+
+UsersSnapshot.forEach((doc) => {
+  if(doc.id == 'admin@gmail.com'){
+    gender = doc.data().gender;
+    age = doc.data().gender;
+  } 
+  // console.log(gender, '=>', age);
+});
+
+MusicSnapshot.forEach((doc) => {
+
+  songs=[]; 
+
+  songs.push({
+    key:   "age",
+    value: doc.data().age
+  });
+
+  songs.push({
+    key:   "emotion",
+    value: doc.data().emotion
+  });
+
+  songs.push({
+    key:   "link",
+    value: doc.data().link
+  });
+
+  songs.push({
+    key:   "singer",
+    value: doc.data().singer
+  });
+
+  songs.push({
+    key:   "title",
+    value: doc.data().title
+  });
+  songsList.push(songs);
+  
+});
+
+  console.log(songsList);
+  
+})();
 
 app.get("/", function(req, res) {
   //when we get an http get request to the root/homepage
-  res.send("Hello World");
+  res.send(songsList);
 });
 
 
@@ -53,9 +99,6 @@ app.get("/", function(req, res) {
 //   var token = jwt.sign({ id: user.id }, "password");
 //   return res.json(user);
 // });
-
-
-
 
 
 
@@ -140,3 +183,5 @@ app.get("/", function(req, res) {
 app.listen(PORT, function() {
   console.log(`Listening on Port ${PORT}`);
 });
+
+
