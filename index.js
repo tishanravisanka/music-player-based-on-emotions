@@ -31,7 +31,7 @@ snapshot.forEach((doc) => {
 });
 })();
 
-app.get("/", (req, res) => res.send("Hello World!"));
+app.get("/getSongs", (req, res) => res.send("Hello World!"));
 
 // app.post("/getSongs", async (req, res) => {
 //   const { email } = req.body;
