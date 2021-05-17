@@ -45,9 +45,9 @@ UsersSnapshot.forEach((doc) => {
 // add songs to a array of dictionary
 MusicSnapshot.forEach((doc) => {
 
-  songs=[]; 
+  // songs=[]; 
 
-  songs.push({
+  songsList.push({
     "age": doc.data().age,
     "emotion": doc.data().emotion,
     "link": doc.data().link,
@@ -55,7 +55,7 @@ MusicSnapshot.forEach((doc) => {
     "title": doc.data().title
   });
 
-  songsList.push(songs);
+  // songsList.push(songs);
   
 });
 
@@ -115,7 +115,7 @@ MusicSnapshot.forEach((doc) => {
 app.get("/getSongs", function(req, res) {
   // const { email } = req.body;
   // const { emotion } = req.body;
-  // console.log(email);
+  // console.log(fomatedSongsList);
   res.send(fomatedSongsList);
 
 });
