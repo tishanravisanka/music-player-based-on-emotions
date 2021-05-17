@@ -48,36 +48,21 @@ MusicSnapshot.forEach((doc) => {
   songs=[]; 
 
   songs.push({
-    key:   "age",
-    value: doc.data().age
+    "age": doc.data().age,
+    "emotion": doc.data().emotion,
+    "link": doc.data().link,
+    "singer": doc.data().singer,
+    "title": doc.data().title
   });
 
-  songs.push({
-    key:   "emotion",
-    value: doc.data().emotion
-  });
-
-  songs.push({
-    key:   "link",
-    value: doc.data().link
-  });
-
-  songs.push({
-    key:   "singer",
-    value: doc.data().singer
-  });
-
-  songs.push({
-    key:   "title",
-    value: doc.data().title
-  });
   songsList.push(songs);
   
 });
 
   // recomend song bAsed on user emotion
   for (x in songsList){
-    if(songsList[x][1].value==userEmotion){
+    console.log(songsList[x]);
+    if(songsList[x].emotion==userEmotion){
       fomatedSongsList.push(songsList[x]);
       songsList.pop(songsList[x]);
       x--;
@@ -97,16 +82,16 @@ MusicSnapshot.forEach((doc) => {
 
     for (x in songsList){
       // catogarize user based on age
-      if(songsList[x][0].value<18)
-        songsList[x][0].value = "kid";
-      else if(songsList[x][0].value<35)
-        songsList[x][0].value = "young";
+      if(songsList[x].age<18)
+        songsList[x].age = "kid";
+      else if(songsList[x].age<35)
+        songsList[x].age = "young";
       else
-        songsList[x][0].value = "old";
+        songsList[x].age = "old";
     }
 
     for (x in songsList){
-      if(songsList[x][0].value==userAgeType){
+      if(songsList[x].age==userAgeType){
         fomatedSongsList.push(songsList[x]);
         songsList.pop(songsList[x]);
       }
