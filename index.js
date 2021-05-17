@@ -131,7 +131,7 @@ app.get("/getSongs", function(req, res) {
   // const { email } = req.body;
   // const { emotion } = req.body;
   // console.log(email);
-  res.send(songsList);
+  res.send(fomatedSongsList);
 
 });
 
