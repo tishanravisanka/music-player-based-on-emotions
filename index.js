@@ -107,7 +107,8 @@ MusicSnapshot.forEach((doc) => {
     }
   }
     
-  console.log(fomatedSongsList);
+  // console.log(fomatedSongsList);
+  console.log(JSON.stringify(fomatedSongsList));
 
 })();
 
@@ -115,8 +116,8 @@ MusicSnapshot.forEach((doc) => {
 app.get("/getSongs", function(req, res) {
   // const { email } = req.body;
   // const { emotion } = req.body;
-  // console.log(fomatedSongsList);
-  res.send(fomatedSongsList);
+  
+  res.send(JSON.stringify(fomatedSongsList));
 
 });
 
