@@ -125,7 +125,7 @@ MusicSnapshot.forEach((doc) => {
 
 // requesting recomended song list
 app.get("/getSongs", function(req, res) {
-   const { email } = req.body;  
+  //  const { email } = req.body;  
   res.send(JSON.stringify(fomatedSongsList));
 
 });
