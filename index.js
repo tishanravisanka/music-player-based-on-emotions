@@ -131,9 +131,9 @@ app.get("/getSongs", function(req, res) {
 });
 
 // requesting recomended song list
-app.get("/", function(req, res) {
-  // const { email } = req.body;
-  res.send(JSON.parse(req.body));
+app.post("/", function(req, res) {
+  const { email } = req.body;
+  return res.send(JSON.parse(email));
 
 });
 
