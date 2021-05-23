@@ -139,6 +139,11 @@ app.get("/", function(req, res) {
 
 });
 
+app.get('/:id', function (req, res, next) {
+    var id = req.params.id;
+    console.log('The id: ' + id);
+});
+
 
 
 // app.post("/getSongs", async (req, res) => {
