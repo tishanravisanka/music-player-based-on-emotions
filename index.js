@@ -124,31 +124,29 @@ MusicSnapshot.forEach((doc) => {
 })();
 
 // requesting recomended song list
-app.get("/getSongs", function(req, res) {
+app.get("/", function(req, res) {
   // const { email } = req.body;
-  // const { emotion } = req.body;
-  
-  res.send(JSON.stringify(fomatedSongsList));
+  res.send(JSON.parse(req.body));
 
 });
 
 
 
 
-app.post("/getSongs", async (req, res) => {
-  const { email } = req.body;
-  console.log(email);
+// app.post("/getSongs", async (req, res) => {
+//   const { email } = req.body;
+//   console.log(email);
 
-  let user = await User.findOne({ email });
-  console.log(user);
-  if (!user) {
-    return res.json({ msg: "no user found with that email" });
-  }
+//   let user = await User.findOne({ email });
+//   console.log(user);
+//   if (!user) {
+//     return res.json({ msg: "no user found with that email" });
+//   }
   
 
-  var token = jwt.sign({ id: user.id }, "password");
-  return res.json(user);
-});
+//   var token = jwt.sign({ id: user.id }, "password");
+//   return res.json(user);
+// });
 
 
 app.listen(PORT, function() {
