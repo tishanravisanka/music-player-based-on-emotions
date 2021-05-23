@@ -6,9 +6,9 @@ const admin = require('firebase-admin');
 const serviceAccount = require('./music-player-2fab1-firebase-adminsdk-zhvs4-2d89ec21c6.json');
 
 var userEmotion = "Happy";
+var email = 'admin@gmail.com';
 var myEmotion;
 var userAgeType;
-
 var songs = []; 
 var songsList = [];   
 var fomatedSongsList = [];                          
@@ -47,7 +47,7 @@ const MusicSnapshot = await db.collection('Music').get();
 
 // get currentt user data
 UsersSnapshot.forEach((doc) => {
-  if(doc.id == 'admin@gmail.com'){
+  if(doc.id == email){
     gender = doc.data().gender;
     userAge = doc.data().age;
   } 
@@ -125,9 +125,7 @@ MusicSnapshot.forEach((doc) => {
 
 // requesting recomended song list
 app.get("/getSongs", function(req, res) {
-  // const { email } = req.body;
-  // const { emotion } = req.body;
-  
+   const { email } = req.body;  
   res.send(JSON.stringify(fomatedSongsList));
 
 });
@@ -137,11 +135,6 @@ app.get("/", function(req, res) {
   // const { email } = req.body;
   res.send(JSON.parse(req.body));
 
-});
-
-app.get('/:id', function (req, res, next) {
-    var id = req.params.id;
-    console.log('The id: ' + id);
 });
 
 
