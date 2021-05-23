@@ -124,12 +124,20 @@ MusicSnapshot.forEach((doc) => {
 })();
 
 // requesting recomended song list
+app.get("/getSongs", function(req, res) {
+  // const { email } = req.body;
+  // const { emotion } = req.body;
+  
+  res.send(JSON.stringify(fomatedSongsList));
+
+});
+
+// requesting recomended song list
 app.get("/", function(req, res) {
   // const { email } = req.body;
   res.send(JSON.parse(req.body));
 
 });
-
 
 
 
