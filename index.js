@@ -131,7 +131,7 @@ app.get("/getSongs", function(req, res) {
 });
 
 // requesting recomended song list
-app.post("/", function(req, res) {
+app.post("/", async(req, res) => {
   const { email } = req.body;
   return res.send(JSON.parse(email));
 
